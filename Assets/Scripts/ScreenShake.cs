@@ -21,12 +21,12 @@ public class ScreenShake : MonoBehaviour
     [ContextMenu("Start Shake")]
     public void StartShake()
     {
-        vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 1;
+        vcam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 1;
     }
 
     [ContextMenu("End Shake")]
     public void EndShake()
     {
-        vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 0;
+        vcam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 0;
     }
 }
