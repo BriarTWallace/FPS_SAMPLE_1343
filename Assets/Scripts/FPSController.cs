@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class FPSController : MonoBehaviour
 {
@@ -16,7 +17,11 @@ public class FPSController : MonoBehaviour
     [SerializeField] float lookSensitivityY = 1.0f;
     [SerializeField] float gravity = -9.81f;
     [SerializeField] float jumpForce = 10;
-    
+    [SerializeField] float maxHealth = 100f;
+    float currentHealth;
+
+    public UnityEvent<float> OnPlayerDamaged = new UnityEvent<float>();
+
     // private variables
     Vector3 velocity;
     bool grounded;
@@ -39,6 +44,7 @@ public class FPSController : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
+        currentHealth = maxHealth;
 
         // start with a gun
         AddGun(initialGun);
@@ -133,6 +139,14 @@ public class FPSController : MonoBehaviour
         currentGun.AddAmmo(amount);
     }
 
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        OnPlayerDamaged?.Invoke(currentHealth / maxHealth);
+    }
+
+
     // Input methods
 
     bool GetPressFire()
@@ -167,6 +181,7 @@ public class FPSController : MonoBehaviour
     {
         if (hit.gameObject.GetComponent<Damager>())
         {
+            TakeDamage(10f);
             var collisionPoint = hit.collider.ClosestPoint(transform.position);
             var knockbackAngle = (transform.position - collisionPoint).normalized;
             velocity = (20 * knockbackAngle);

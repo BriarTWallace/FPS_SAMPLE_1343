@@ -62,8 +62,10 @@ public class Gun : MonoBehaviour
         ammo -= 1;
 
         OnAmmoChanged.Invoke(ammo);
+        OnGunFired.Invoke();
 
         return true;
+        
     }
 
     public void AddAmmo(int amount)
@@ -79,8 +81,5 @@ public class Gun : MonoBehaviour
         OnAmmoChanged.Invoke(ammo);
     }
 
-    private void Fire()
-    {
-        OnGunFired.Invoke();
-    }
+    
 }

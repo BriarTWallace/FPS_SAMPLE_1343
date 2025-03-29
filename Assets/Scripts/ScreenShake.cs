@@ -9,7 +9,11 @@ public class ScreenShake : MonoBehaviour
 
     void Start()
     {
-        
+        Gun gun = FindObjectOfType<Gun>();
+        if (gun != null)
+        {
+            gun.OnGunFired.AddListener(StartShake);
+        }
     }
 
     
@@ -18,13 +22,16 @@ public class ScreenShake : MonoBehaviour
         
     }
 
-    [ContextMenu("Start Shake")]
+    
     public void StartShake()
     {
+        
         vcam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 1;
+        
+        Invoke(nameof(EndShake), 0.1f);
     }
 
-    [ContextMenu("End Shake")]
+    
     public void EndShake()
     {
         vcam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 0;
